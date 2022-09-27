@@ -9,7 +9,18 @@ withdrawBonusesBtn.addEventListener('click', (evt) => {
 		return obj;
 	}, {});
 
-	console.log(withdrawCashback);
+	const isNullishWithDrawCashback = Object.values(withdrawCashback).some(value => {
+		if (value === null || value === "") {
+			popupErrorNotification({
+				title: "Неправильный ввод",
+				message: "Количество бонусов не может быть пустым"
+			});
+			return true;
+		}
+		return false;
+	});
+
+	if (isNullishWithDrawCashback) return;
 
 	withdrawCashback = {userId: currentClient.id, ...withdrawCashback};
 	fetch( 
@@ -23,6 +34,9 @@ withdrawBonusesBtn.addEventListener('click', (evt) => {
 		})
 		.then(res => {
 			document.getElementById("addCashbackTabBtn").click();
+			popupSuccessNotification({
+				title: "Бонусы были списаны"
+			});
 			console.log(res);
 		})
 		.catch(e => console.log(e));

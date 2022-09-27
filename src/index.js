@@ -100,6 +100,18 @@ function removeBeerFromList(el) {
 
 // beer list section end
 
+const popupErrorNotification = window.createNotification({
+	showDuration: 3500,
+	closeOnClick: true,
+	theme: 'error'
+});
+
+const popupSuccessNotification = window.createNotification({
+	showDuration: 3500,
+	closeOnClick: true,
+	theme: 'success'
+});
+
 document.getElementById("defaultOpen").click();
 let currentClient = null;
 if (!currentClient) {
@@ -124,84 +136,66 @@ function openTab(evt, tabName) {
   evt.currentTarget.className += " active";
 }
 
-// /public/v1/users POST - CREATE CLIENT CARD
-const createClientButton = document.getElementById("createClient");
-createClientButton.addEventListener('click', (evt) => {  
-	evt.preventDefault();
-	const newClient = $('#createUser').serializeArray()
-		.reduce((obj, item) => {
-			obj[item.name] = item.value;
-			return obj;
-		}, {});
-
-	console.log(newClient);
-	fetch( 
-		"http://164.92.187.95:8080/public/v1/users", 
-		{
-			method: "POST",
-			headers: {
-				accept: 'application/json'
-			},
-			body: JSON.stringify(newClient)
-		})
-		.then(res => console.log(res))
-		.catch(e => console.log(e));
-});
-
 // /public/v1/users/byphone GET - GET CLIENTS BY 4 LAST DIGITS
 const getClientsButton = document.getElementById("getClientsButton");
 getClientsButton.addEventListener('click', (evt) => {
 	evt.preventDefault();
+
+	const clientList = document.getElementById("clientList");
+	while (clientList.firstChild) {
+		clientList.firstChild.remove();
+	}
+
 	const phoneNumber = $('#getUser').serializeArray()
 		.reduce((obj, item) => {
 			obj[item.name] = item.value;
 			return obj;
 		}, {});
 
-	console.log(phoneNumber?.last4digits);
-
-	const clientList = document.getElementById("clientList");
-	if (phoneNumber && phoneNumber.last4digits.length === 4) {
-		fetch( 
-			`http://164.92.187.95:8080/public/v1/users/byphone?last4digits=${phoneNumber?.last4digits}`)
-			.then(res => res.json())
-			.then((clientData) => {
-				while (clientList.firstChild) {
-					clientList.firstChild.remove();
-				}
-				if (!clientData || clientData === "") return;
-				clientData?.forEach(item => {
-					const client = document.createElement('div');
-			
-					client.setAttribute("id", item.id);
-					client.classList.add("d-flex", "mb-3");
-					client.innerHTML = `
-						<div style="width:30%;">Имя: ${item.firstName} ${item.lastName}</div>
-						<div style="width:30%;">Телефон: ${item.phoneNumber}</div>
-						<div style="width:20%;">Бонусы: ${item.cashback} р.</div>
-						<button id="chooseClient-${item.id}" style="width:25%;height:5%;">Выбрать клиента</button>`;
-					clientList.appendChild(client);
-			
-					let chooseClient = document.getElementById(`chooseClient-${item.id}`);
-					chooseClient.addEventListener("click", function () {
-						currentClient = item;
-						console.log(currentClient);
-						document.getElementById("withdrawCashbackTabBtn").removeAttribute("disabled");
-						document.getElementById("addCashbackTabBtn").removeAttribute("disabled");
-			
-						const parent = clientList;
-						while (parent.firstChild) {
-								parent.firstChild.remove();
-						}
-						document.getElementById("currentClientName").innerHTML = `${currentClient.firstName} ${currentClient.lastName}`;
-						document.getElementById("clientName").innerHTML = `${currentClient.firstName} ${currentClient.lastName}`;
-						document.getElementById("currentClientCashback").innerHTML = `${currentClient.cashback}`;
-
-						document.getElementById("withdrawCashbackTabBtn").click();
-					});
-				});
-				console.log(clientData);
-			})
-			.catch(e => console.log(e));
+	if (!phoneNumber || phoneNumber.last4digits.length !== 4) {
+		popupErrorNotification({
+			title: "Неправильный ввод",
+			message: "Введи последние 4 цифры номера телефона"
+		});
+		return;
 	}
+
+	fetch( 
+		`http://164.92.187.95:8080/public/v1/users/byphone?last4digits=${phoneNumber?.last4digits}`)
+		.then(res => res.json())
+		.then((clientData) => {
+			if (!clientData || clientData === "") return;
+			clientData?.forEach(item => {
+				const client = document.createElement('div');
+		
+				client.setAttribute("id", item.id);
+				client.classList.add("d-flex", "mb-3");
+				client.innerHTML = `
+					<div style="width:30%;">Имя: ${item.firstName} ${item.lastName}</div>
+					<div style="width:30%;">Телефон: ${item.phoneNumber}</div>
+					<div style="width:20%;">Бонусы: ${item.cashback} р.</div>
+					<button id="chooseClient-${item.id}" style="width:25%;height:5%;">Выбрать клиента</button>`;
+				clientList.appendChild(client);
+		
+				let chooseClient = document.getElementById(`chooseClient-${item.id}`);
+				chooseClient.addEventListener("click", function () {
+					currentClient = item;
+					console.log(currentClient);
+					document.getElementById("withdrawCashbackTabBtn").removeAttribute("disabled");
+					document.getElementById("addCashbackTabBtn").removeAttribute("disabled");
+		
+					const parent = clientList;
+					while (parent.firstChild) {
+							parent.firstChild.remove();
+					}
+					document.getElementById("currentClientName").innerHTML = `${currentClient.firstName} ${currentClient.lastName}`;
+					document.getElementById("clientName").innerHTML = `${currentClient.firstName} ${currentClient.lastName}`;
+					document.getElementById("currentClientCashback").innerHTML = `${currentClient.cashback}`;
+
+					document.getElementById("withdrawCashbackTabBtn").click();
+				});
+			});
+			console.log(clientData);
+		})
+		.catch(e => console.log(e));
 });
