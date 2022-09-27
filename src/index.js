@@ -164,7 +164,13 @@ getClientsButton.addEventListener('click', (evt) => {
 		`http://164.92.187.95:8080/public/v1/users/byphone?last4digits=${phoneNumber?.last4digits}`)
 		.then(res => res.json())
 		.then((clientData) => {
-			if (!clientData || clientData === "") return;
+			if (!clientData || clientData === "") {
+				popupErrorNotification({
+					title: "Нет клиентов",
+					message: "Проверь последние 4 цифры номера телефона"
+				});
+				return;
+			}
 			clientData?.forEach(item => {
 				const client = document.createElement('div');
 		

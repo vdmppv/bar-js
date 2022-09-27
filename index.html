@@ -45,7 +45,7 @@
             <div id="currentClientInfo" class="d-flex align-items-center">
               <div id="currentClientName" style="font-size:24px;width:80%;"></div>
               <div id="currentClientCashback" style="font-size:24px;width:10%;"></div>
-              <input id="currentClientWithdrawAmount" oninput="withdrawAmountChange()" style="width:10%;" type="text" id="cashback" name="cashback" maxlength="5">
+              <input id="currentClientWithdrawAmount" class="decimal" oninput="withdrawAmountChange()" style="width:10%;" type="text" id="cashback" name="cashback" maxlength="5">
             </div>
             <button id="currentClientWithdrawButton" style="background: darkviolet;margin-top:20px;">Вычитать бонусы</button>
           </form>
@@ -65,7 +65,7 @@
               <div id="clientName" style="font-size:24px;width:80%;"></div>
             </div>
             <label for="orderAmount">Сумма заказа: </label>
-            <input id="currentClientOrderAmount" style="font-size:24px;width:20%;margin-left:20px;" type="text" id="orderAmount" name="cashback" maxlength="6" required>
+            <input id="currentClientOrderAmount" class="decimal" style="font-size:24px;width:20%;margin-left:20px;" type="text" id="orderAmount" name="cashback" maxlength="6" required>
             <button id="addCashback" style="background: limegreen;margin-top:20px;">Добавить бонусы</button>
           </form>
         </div>
