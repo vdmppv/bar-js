@@ -1,0 +1,157 @@
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Roboto', sans-serif;
+}
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: #FFD400 !important;
+}
+.wrapper{
+  width: 950px;
+  padding: 50px;
+  border-radius: 7px;
+  background: #2e294e;
+  box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
+  align-self: center;
+  margin-top: 50px;
+  color: white;
+}
+
+@media only screen and (max-width: 600px) {
+  .wrapper {
+    width: 350px;
+    padding: 30px;
+    border-radius: 7px;
+    background: #2e294e;
+    box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
+    align-self: center;
+    margin-top: 70px;
+    color: white;
+  }
+  .cont-header {
+    height: 100px;
+    background: #2e294e;
+  }
+  .sign-in {
+    padding: 10px;
+  }
+}
+
+.cont-header {
+  background-color: #2e294e !important;
+  color: white;
+}
+
+.wrapper header{
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+}
+.wrapper form{
+  margin: 20px 0 20px 0;
+}
+form :where(input, button){
+  width: 100%;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+}
+form p{
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+form input{
+  height: 50px;
+  font-size: 17px;
+  padding: 0 15px;
+  border: 1px solid #999;
+  color: #2e294e;
+}
+form input:focus{
+  padding: 0 14px;
+  border: 2px solid #FFD400;
+}
+form .exchange-rate{
+  font-size: 17px;
+  margin: 20px 0 30px;
+}
+form button{
+  height: 52px;
+  color: #FBFBFF;
+  font-size: 17px;
+  cursor: pointer;
+  background: #FFD400;
+  border-radius: 7px;
+  transition: 0.3s ease;
+}
+form button:hover{
+  background: #e6bf00;
+  transition: 0.3s ease;
+}
+
+.cont-wrapper {  
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.underline {
+  text-decoration: underline;
+  text-underline-position: under;
+  text-decoration-color: #e6bf00
+}
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #e6bf00;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  color: white;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #FFD400;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #c8a703;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  animation: fadeEffect 1s;
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.input-block {
+  margin-bottom: 20px;
+}
